@@ -1,0 +1,63 @@
+ const ITEM = ['unit1', 'unit2', 'unit3', 'unit4', 'unit5', 'unit6', 'unit7', 'unit8'] //склад
+ const PRICE = [10, 100, 1000, 10000, 20, 300, 4000, 50000]
+ const ID = [1, 2, 3, 4, 5, 6, 7, 8]
+
+ let productsDTO =
+     createDTO() //Data Transfer Object? DTO — это класс, содержащий данные без какой-либо логики для работы с ними. DTO обычно используются для передачи данных между различными приложениями, либо между слоями внутри одного приложения. Их можно рассматривать как хранилище информации, единственная цель которого — передать эту информацию получателю.
+
+ function createDTO() {
+     let arr = []
+
+     for (let i = 0; i < ITEM.length; i++) {
+         arr.push(createProduct(ITEM[i], PRICE[i], ID[i])) // Заполнили  массив объектами
+     }
+     return arr
+ }
+
+ function createProduct(name, price, id1) { //собрали объект 
+     return {
+         name: name,
+         id: id1,
+         price: price
+     }
+ }
+
+ //  Выбираем товары, считаем сумму
+
+
+ function list() {
+     productsDTO.forEach(el => {
+         console.log('имя', el.name, 'цена', el.price, 'номер', el.id)
+     })
+ } // выводим список товаров
+
+ list()
+
+ function incart() {
+     let cart = [0]
+     let p = 0
+     let sumcart = 0
+
+     while (cart.length < arr.length+1 && p !== 10) { // наполняем корзину  4,  10 прерывает запросы 
+
+         console.log('cart.length', cart.length)
+         p = +prompt('введите номер товара для добавления в корзину макс. 4, для окончания ввести, 10', p)
+         cart.push(p)
+         console.log('cart', cart)
+
+         productsDTO.forEach(el => { //перебор элементов массива productsDTO, функция , c  find не разобрался
+                 if (el.id == p) {
+                     sumcart += el.price // сумма cart
+                 }
+
+                 // console.log('id', el.id, 'price', el.price, 'сумма', sumcart)
+             }
+
+             //console.log ('сумма товаров в корзине', sumcart)
+         )
+
+     }
+     return sumcart
+
+ }
+ console.log('сумма корзины', incart())
