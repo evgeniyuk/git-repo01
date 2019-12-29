@@ -1,0 +1,155 @@
+*{
+    margin: 0 auto;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.header {
+    padding: 10px 20px;
+    border-bottom: 1px solid #c0c0c0;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    background-image: url(img/keyboardbackg.png);
+    background-repeat:no-repeat ;
+    background-size: cover ;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.logo {
+    display: block;
+    width: 120px;
+}
+
+
+.logo:hover {
+    cursor: pointer;
+}
+
+.logo img {
+    width: 60px;
+
+}
+
+.search-form{
+    display: block;
+
+}
+.search-input{
+    display: block;
+border-radius: 2px;
+border: 1px solid grey;
+margin:5px;
+}
+
+
+.search-input:focus{
+    border: 1px solid blue;
+
+    }
+/*.totalsum {
+
+    border: none;
+    background-color: red;
+    color: #fff;
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin-right: 1px;
+}*/
+
+.cart-button {
+    -webkit-appearance: none;
+    border: none;
+    background-color: #46a5fc;
+    color: #fff;
+    border-radius: 4px;
+    padding: 5px 10px;
+    height: 30px;
+}
+
+.cart-button:hover {
+    background-color: #0a7de9;
+}
+
+.cart-container {
+
+    padding: 10px;
+}
+
+.goods-list {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1280px;
+    margin: 0 auto;
+    justify-content: space-around;
+}
+
+.goods-item {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    width: calc(100% / 4 - 60px);
+    background-color: #f1f1f1;
+    border-radius: 3px;
+color: dimgray;
+}
+
+.goods-item-pict{
+
+    width:100px;
+}
+.goods-item:hover {
+    background-color: #f0e5e5;
+}
+
+
+.goods-item-button {
+
+background-color: orange;
+color: #fff;
+border: 1px solid grey ;
+border-radius:5px;
+padding: 10px;
+font-size: larger;
+width:100px;
+height: 40px ;
+
+}
+
+.title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.goods-title {
+    margin-bottom: 20px;
+}
+
+.cart-container {
+    display: flex;
+    position: fixed;
+    margin-top: 80px;
+    right: 50px;
+    
+    width: 200px;
+    min-height: 50%;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
+    background-color: lightyellow;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.not-found-items {
+    text-align: center;
+}

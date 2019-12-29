@@ -1,0 +1,16 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "test server js",
+  "main": "server.js",
+  "scripts": {
+    "test": "consol.log",
+    "start": "node server2.js"
+  },
+  "author": "Evgeniyuk",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "node-static": "^0.7.11"
+  }
+}
