@@ -23,7 +23,14 @@ app.get ('/catalog', (req, res) =>{
 });
 
 
+app.get('/cart', (req,res)=>{
 
+  fs.readFile ('data/cart.json', 'utf-8', (err,data)=>{
+		if(err) res.sendStatus(404);
+	res.send(data); })
+
+
+});
 
 app.post('/cart', (req, res) => {
   const item = req.body;
@@ -36,6 +43,22 @@ app.post('/cart', (req, res) => {
       res.sendStatus(200);
     })
   });
+});
+
+
+
+app.delete ('/cart/:id', (req,res)=>{
+const  id = req.params.id;
+fs.readFile('data/cart.json', 'utf-8', (err, data) => {
+  if (err) res.sendStatus(500);
+  const cart = JSON.parse(data);
+  cart.splice(id, 1);
+ 
+  fs.writeFile('data/cart.json', JSON.stringify(cart), (err) => {
+    if (err) res.sendStatus(500);
+    res.sendStatus(200);
+  })
+});
 });
 
 

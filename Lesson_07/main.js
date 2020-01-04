@@ -1,5 +1,9 @@
 const cart = [];
 
+
+
+
+
 Vue.component('search', {
   props: {
     searchLine: {
@@ -26,53 +30,33 @@ Vue.component('cart', {
   data: () => ({
     cart,
     isVisibleCart: false,
-    sum: 0
-  
-  
   }),
 
   methods: {
-
-    del() {
-      console.log(this.good);
-      cart.splice(this.good,1);
+    delFromCart(index) {
+      //console.log(this.good);
+      this.cart.splice(index, 1);
+      // this.cart = [...this.cart];
+      this.$emit('delete', index);
     },
 
-    sum () {    
-      let sumcart=0;
-          cart.forEach(el => {
-            sumcart=this.good.price;
-            console.log(this.good.price);
-            console.log(sumcart);
-         
-          });
-          return sumcart;
-        },
-    
-  
-
- 
-  //  showsum: sumcart () {
-  
-    
-    
     toggleVisibility() {
       this.isVisibleCart = !this.isVisibleCart;
     }
   },
   template: `
     <div class="cart-container" v-if="isVisibleCart">
-      <ul>
-        <li v-for="good in cart">
+  
+    <ul>
+        <li v-for="(good, index) in cart">
            {{good.product_name}}
            {{good.price}}
-           <button @click="del">Удалить</button>
+           <button @click="delFromCart(index)">Удалить</button>
            
         </li>
       </ul>
      
-     <div><p>Сумма</p>{{ sum}}
-     <button @click="sum">пересчитать</button></div>
+
     </div>
   `
 });
@@ -81,16 +65,13 @@ Vue.component('goods-item', {
   props: ['good'],
   methods: {
     buy() {
+
       cart.push(this.good);
       console.log(this.good);
 
-
+      this.$emit('buy', this.good);
 
     }
- 
-
-
-
   },
   template: `
     <div class="goods-item">
@@ -106,6 +87,14 @@ Vue.component('goods-item', {
 
 Vue.component('goods-list', {
   props: ['goods'],
+
+  methods: {
+    buy(good) {
+      // cart.push(this.good);
+      this.$emit('buy', good);
+    }
+  },
+
   computed: {
     isGoodsEmpty() {
       return this.goods.length === 0;
@@ -113,7 +102,7 @@ Vue.component('goods-list', {
   },
   template: `
     <div class="goods-list" v-if="!isGoodsEmpty">
-      <goods-item v-for="good in goods" :good="good" :key="good.id_product"></goods-item>
+      <goods-item v-for="good in goods" :good="good" @buy="buy" :key="good.id_product"></goods-item>
     </div>
     <div class="not-found-items" v-else>
       <h2>Нет данных</h2>
@@ -147,7 +136,8 @@ const app = new Vue({
         xhr.onreadystatechange = function () {
           if (xhr.readyState === 4) {
             if (xhr.status === 200) {
-              const body = JSON.parse(xhr.responseText);
+              let body = JSON.parse(xhr.responseText);
+              // let body = (xhr.responseText);
               resolve(body)
             } else {
               reject(xhr.responseText);
@@ -162,6 +152,51 @@ const app = new Vue({
         xhr.send();
       });
     },
+
+    async buy(good) {
+
+      this.makePOSTRequest('/cart', good) //s
+      //cart.push(good);
+      this.makeGETRequest('/cart', good)
+    },
+    delFromCart(index) {
+      this.makeDELRequest(`/cart/${index}`)
+
+
+    },
+
+
+
+    makeDELRequest(url) {
+      return new Promise((resolve, reject) => {
+        let xhr;
+        if (window.XMLHttpRequest) {
+          xhr = new window.XMLHttpRequest();
+        } else {
+          xhr = new window.ActiveXObject('Microsoft.XMLHTTP');
+        }
+
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+              //  const body = JSON.parse(xhr.responseText);
+              let body = (xhr.responseText);
+              resolve(body)
+            } else {
+              reject(xhr.responseText);
+            }
+          }
+        };
+        xhr.onerror = function (err) {
+          reject(err);
+        };
+
+        xhr.open('DELETE', url);
+        xhr.send();
+      });
+    },
+
+
     makePOSTRequest(url, data) {
       return new Promise((resolve, reject) => {
         let xhr;
@@ -174,7 +209,8 @@ const app = new Vue({
         xhr.onreadystatechange = function () {
           if (xhr.readyState === 4) {
             if (xhr.status === 200) {
-              const body = JSON.parse(xhr.responseText);
+              //const body = JSON.parse(xhr.responseText);
+              let body = (xhr.responseText);
               resolve(body)
             } else {
               reject(xhr.responseText);
@@ -187,7 +223,7 @@ const app = new Vue({
 
         xhr.open('POST', url);
         xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-        xhr.send(data);
+        xhr.send(JSON.stringify(data));
       });
     },
     toggleCartVisibility() {
@@ -201,14 +237,40 @@ const app = new Vue({
     filteredGoods() {
       const searchValue = this.searchLine.replace(/[\*]/gi, '');
       const regexp = new RegExp(searchValue, 'i');
-      return this.goods.filter((good) => regexp.test(good.product_name));
+     // return this.goods.filter((good) => regexp.test(good.product_name));
+     const  resultfilter= this.goods.filter((good) => regexp.test(good.product_name));
+     return resultfilter;
     },
   },
-  async mounted() {
-    try {
-      this.goods = await this.makeGETRequest(`/catalog`);
-    } catch (e) {
+  mounted() {
+    Promise.all([
+      this.makeGETRequest(`/cart`),
+      this.makeGETRequest(`/catalog`)
+
+
+    ]).then(([cartdata, catalogdata]) => {
+
+      this.goods = catalogdata;
+      cart.push(...cartdata);
+
+      console.log(cartdata);
+      console.log(catalogdata);
+
+    }).catch(() => {
       this.setError('Товары не найдены');
-    }
+    })
+
+
+    /*    let cartdata  = this.makeGETRequest('/cart');
+    //    let catalogdata = this.makeGETRequest('/catalog');
+    console.log(cartdata);
+    console.log(catalogdata);    
+
+        try {
+          this.goods = await this.makeGETRequest(`/catalog`);
+        } catch (e) {
+          this.setError('Товары не найдены');
+        }
+      */
   }
 });
