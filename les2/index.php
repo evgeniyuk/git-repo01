@@ -145,20 +145,22 @@ echo "7. *Написать функцию, которая вычисляет т�
 function currentTime () {
 
     $nowMin =(int)date( 'i');
-    //$nowMin = 23;
+    $nowMin =51;
     $nowHour =(int)date ('H');
-    //$nowHour=23;
+    $nowHour=23;
     $hourStr="";
     $minStr="";
        
     $nowMin1=(int)$nowMin%10; //единицы, разряд
+    //$nowMin10=$nowMin1+10; 
     
   
     ($nowHour==0 || ($nowHour>=5 && $nowHour<=20))? $hourStr=' часов':(($nowHour==21||$nowHour==1)? $hourStr=' час':$hourStr=' часа');
-    ($nowMin1==0 || ($nowMin1>=5 && $nowMin<=20 ))? $minStr=' минут':(($nowMin1==1)? $minStr=' минута':$minStr=' минуты'); 
- 
-//var_dump($nowMin1);
-//var_dump($nowMin);
+    ($nowMin1==0 || $nowMin1>4 || ($nowMin>4 && $nowMin<21))? $minStr=' минут':(($nowMin1==1)? $minStr=' минута':$minStr=' минуты'); 
+    
+ //var_dump( $nowMin10);   
+ //var_dump($nowMin1);
+ //var_dump($nowMin);
     echo " <br> время " . $nowHour ." $hourStr" .":". $nowMin ."$minStr ";  
     
 };
