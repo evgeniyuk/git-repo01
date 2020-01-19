@@ -145,9 +145,9 @@ echo "7. *Написать функцию, которая вычисляет т�
 function currentTime () {
 
     $nowMin =(int)date( 'i');
-    $nowMin =51;
+    //$nowMin =51;
     $nowHour =(int)date ('H');
-    $nowHour=23;
+    //$nowHour=23;
     $hourStr="";
     $minStr="";
        
