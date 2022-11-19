@@ -12,6 +12,6 @@
   "dependencies": {
     "express": "^4.17.1",
     "node-static": "^0.7.11",
-    "webpack-cli": "^3.3.10"
+    "webpack-cli": "^3.3.12"
   }
 }
